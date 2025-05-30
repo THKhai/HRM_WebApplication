@@ -1,0 +1,6 @@
+@ptudhttthd_web_hrm.Server_HostAddress = http://localhost:5160
+
+GET {{ptudhttthd_web_hrm.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
