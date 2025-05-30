@@ -43,12 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ptudhttthd-web-hrm.client\ptudhttthd-web-hrm.client.esproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Uploads\" />
   </ItemGroup>
 
