@@ -8,6 +8,7 @@
     <SpaRoot>..\ptudhttthd-web-hrm.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:51573</SpaProxyServerUrl>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,9 @@
     <Compile Remove="Uploads\request\**" />
     <Content Remove="Uploads\avatar\**" />
     <Content Remove="Uploads\request\**" />
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
     <EmbeddedResource Remove="Uploads\avatar\**" />
     <EmbeddedResource Remove="Uploads\request\**" />
     <None Remove="Uploads\avatar\**" />
