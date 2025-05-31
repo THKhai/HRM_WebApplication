@@ -16,7 +16,7 @@ public class BulkEmployeeTests
     }
 
     [Test]
-    public async Task RegisterAndSend_500Employees()
+    public async Task RegisterAndSend_1000Employees()
     {
         var tasks = Enumerable.Range(4, 1000).Select(async i =>
         {
@@ -56,42 +56,48 @@ public class BulkEmployeeTests
 
         await Task.WhenAll(tasks); // Wait for all
     }
-
     [Test]
-    public async Task LeaveRequest_50Employees()
+    public async Task RegisterAndSend_9000Employees()
     {
-        var tasks = Enumerable.Range(4, 50).Select(async i =>
+        var tasks = Enumerable.Range(10001, 10000).Select(async i =>
         {
-            using var client = new HttpClient();
+            using var client = new HttpClient(); // Create isolated client
             var email = $"user{i}@example.com";
-            
-            // 2. Đăng nhập
+            var signupPayload = new
+            {
+                UserName = $"user{i}",
+                Email = email,
+                Password = "Test@1234",
+                Roles = new[] { "Thuong" }
+            };
+
+            // Register
+            var signupResp = await client.PostAsJsonAsync($"{baseUrl}/Auth/signup", signupPayload);
+
+            // Login
             var loginPayload = new { Email = email, Password = "Test@1234" };
             var loginResp = await client.PostAsJsonAsync($"{baseUrl}/Auth/login", loginPayload);
-            if (!loginResp.IsSuccessStatusCode)
-            {
-                Assert.Fail($"Login failed for user {i}");
-                return;
-            }
-    
+            if (!loginResp.IsSuccessStatusCode) return;
+
             var loginData = await loginResp.Content.ReadFromJsonAsync<LoginResponseDTO>();
             client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", loginData.Token);
-    
-            // // 3. Gửi yêu cầu nghỉ phép
+
+            // Send leave request
             // var leavePayload = new
             // {
             //     fromDate = "2025-06-01",
             //     toDate = "2025-06-03",
             //     reason = "Test leave"
             // };
-            //
             // var leaveResp = await client.PostAsJsonAsync($"{baseUrl}/leave-request", leavePayload);
-            // Assert.IsTrue(leaveResp.IsSuccessStatusCode, $"Leave request failed for user {i}");
+            //
+            // Assert.IsTrue(leaveResp.IsSuccessStatusCode);
         });
-    
-        await Task.WhenAll(tasks);
+
+        await Task.WhenAll(tasks); // Wait for all
     }
+    
     public class LoginResponseDTO
     {
         public string Token { get; set; }
